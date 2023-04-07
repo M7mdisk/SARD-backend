@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
 
@@ -24,6 +27,7 @@ public class Release {
     @Id
     private String id;
 
+    @CreatedDate
     private Date uploaded_at;
 
     private String name;
@@ -33,6 +37,9 @@ public class Release {
     private String description;
 
     private String server_ip;
+
+    @DocumentReference
+    private Project project;
 
 
     private Enum<Platform> platform;
@@ -44,5 +51,5 @@ public class Release {
         APPROVED
     }
 
-    private Enum<Status> status = Status.UPLOADED;
+    private Status status = Status.UPLOADED;
 }

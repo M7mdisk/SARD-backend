@@ -1,6 +1,7 @@
 package com.example.demo.controller.Auth;
 
 import com.example.demo.config.JwtService;
+import com.example.demo.config.SecurityConfig;
 import com.example.demo.model.Token;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.TokenRepository;
@@ -12,7 +13,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.authentication.AuthenticationManager;
         import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-        import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
         import org.springframework.stereotype.Service;
 
 
@@ -33,8 +35,9 @@ public class AuthService {
                 .firstName(request.getFirstname())
                 .lastName(request.getLastname())
                 .email(request.getEmail())
+                .isActive(true)
                 .password(passwordEncoder.encode(request.getPassword()))
-                .type(User.Type.DEV)
+                .type(User.Type.ROLE_DEV)
                 .build();
         var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -45,17 +48,37 @@ public class AuthService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
+        try {
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+
+    }catch (AuthenticationException e){
+            if (user.getFailedAttempts() >= SecurityConfig.MAX_FAILED_ATTEMPTS){
+                user.setActive(false);
+            }else {
+                user.setFailedAttempts(user.getFailedAttempts()+1);
+            }
+            repository.save(user);
+            return AuthenticationResponse.builder().build();
+        }
+
+
         var jwtToken = jwtService.generateToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
+        if (!user.isActive())
+            jwtToken = null;
+        else {
+            user.setFailedAttempts(0);
+            repository.save(user);
+            revokeAllUserTokens(user);
+            saveUserToken(user, jwtToken);
+        }
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

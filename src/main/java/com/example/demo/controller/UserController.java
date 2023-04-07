@@ -3,10 +3,14 @@ package com.example.demo.controller;
 import com.example.demo.dto.CreateUserDTO;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +23,24 @@ public class UserController {
     private UserService userService;
 
 
+    @GetMapping("/whoAmI")
+    public User whoAmI() {
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        return user;
+
+    }
     @GetMapping("/")
+    @Secured("ROLE_ADMIN")
     public List<User> listUser() {
         return userService.listUsers();
     }
 
     @PostMapping("/")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity createUser(@RequestBody CreateUserDTO usr) {
         User u = new User();
         BeanUtils.copyProperties(usr, u);
@@ -39,6 +55,7 @@ public class UserController {
 
     // Update operation
     @PutMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public User updateUser(@RequestBody User usr,
                            @PathVariable("id") String userId) {
         return userService.updateUser(
@@ -46,7 +63,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteDepartmentById(@PathVariable("id")
+    @Secured("ROLE_ADMIN")
+    public String deleteUserById(@PathVariable("id")
                                        String userId) {
         try {
             userService.deleteUser(userId);

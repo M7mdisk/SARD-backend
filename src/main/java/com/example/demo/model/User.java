@@ -34,10 +34,14 @@ public class User implements UserDetails {
 
     private String password;
 
+    private boolean isActive;
+
+    private int failedAttempts;
+
     public enum Type {
-        ADMIN,
-        DEV,
-        TESTER}
+        ROLE_ADMIN,
+        ROLE_DEV,
+        ROLE_TESTER}
 
 
     private Type type;
@@ -116,5 +120,25 @@ public class User implements UserDetails {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
     }
 }
