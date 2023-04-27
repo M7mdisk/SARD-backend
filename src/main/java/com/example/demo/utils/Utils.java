@@ -7,6 +7,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.util.*;
+import java.util.Random;
 
 public class Utils {
     public static String[] getNullPropertyNames (Object source) {
@@ -34,5 +35,17 @@ public class Utils {
         Collections.addAll(resultList, ignoreList);
         Collections.addAll(resultList, nulls);
         BeanUtils.copyProperties(src, target, resultList.toArray(String[]::new));
+    }
+
+    public static String randomString(int length) {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder result = new StringBuilder();
+        Random rnd = new Random();
+        while (result.length() < length) {
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            result.append(SALTCHARS.charAt(index));
+        }
+
+        return result.toString();
     }
 }

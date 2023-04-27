@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -27,6 +29,17 @@ public class Project {
 
     @DocumentReference
     private List<User> participants;
+
+    @CreatedDate
+    private Date created_at;
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
 
     public List<User> getParticipants() {
         return participants;

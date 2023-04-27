@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,10 +33,13 @@ public class User implements UserDetails {
 
     private String department;
 
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     private boolean isActive;
 
+    @JsonIgnore
     private int failedAttempts;
 
     public enum Type {
@@ -52,6 +56,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -62,21 +67,25 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
@@ -126,8 +135,14 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    @JsonIgnore
     public boolean isActive() {
         return isActive;
+    }
+
+    @JsonIgnore
+    public boolean active(){
+        return this.active();
     }
 
     public void setActive(boolean active) {
@@ -141,4 +156,5 @@ public class User implements UserDetails {
     public void setFailedAttempts(int failedAttempts) {
         this.failedAttempts = failedAttempts;
     }
+
 }

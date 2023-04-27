@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,7 +43,7 @@ public class Release {
     private Project project;
 
 
-    private Enum<Platform> platform;
+    private Platform platform;
 
     // TODO: This may not be included in the final version
     public enum Status {
@@ -50,6 +51,8 @@ public class Release {
         UNDER_TESTING,
         APPROVED
     }
+
+    private List<ReleaseFile> releaseFilesList;
 
     private Status status = Status.UPLOADED;
 }

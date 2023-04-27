@@ -33,6 +33,7 @@ public class ProjectController {
 
 
     @GetMapping("/")
+    @ResponseBody
     public List<Project> list(HttpServletRequest request) {
 
         if (request.isUserInRole("ROLE_ADMIN"))

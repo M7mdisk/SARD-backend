@@ -48,8 +48,7 @@ public class AuthService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+        var user = repository.findByEmail(request.getEmail()).orElseThrow();
         try {
 
             authenticationManager.authenticate(
