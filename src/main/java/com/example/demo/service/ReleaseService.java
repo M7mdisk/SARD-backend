@@ -46,7 +46,7 @@ public class ReleaseService {
         String newFilename = split[0] + "_" + Utils.randomString(8) + "." + split[1];
         String finalLocation  = fileService.upload(f,newFilename);
 
-        ReleaseFile releaseFile = ReleaseFile.builder().filename(finalLocation).osType(osType).build();
+        ReleaseFile releaseFile = ReleaseFile.builder().filename(newFilename).path(finalLocation).osType(osType).build();
 
         return fileRepository.save(releaseFile);
     }

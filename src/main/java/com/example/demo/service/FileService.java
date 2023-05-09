@@ -30,12 +30,12 @@ public class FileService {
 
     private Path foundFile;
 
-    // Returns the path to the uploaded file
+    // Returns the path to the uploaded file, starting from /uploads
     public String upload(MultipartFile file,String filename) throws IOException {
         String fileDir = environment.getProperty("release.upload.dir","./uploads/");
         String finalLocation =Paths.get(fileDir,filename).toAbsolutePath().normalize().toString();
         file.transferTo(new File(finalLocation));
-        return finalLocation;
+        return Paths.get(fileDir,filename).toString();
     }
 
     public String upload(MultipartFile file) throws IOException {

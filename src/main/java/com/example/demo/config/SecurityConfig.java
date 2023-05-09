@@ -43,7 +43,7 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration {
         http
                 .csrf()
                 .disable()
-                .authorizeHttpRequests((requests)-> requests.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests((requests)-> requests.requestMatchers("/auth/**","/uploads/**").permitAll().anyRequest().authenticated())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

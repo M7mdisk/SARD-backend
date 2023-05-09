@@ -19,5 +19,7 @@ public class ReleaseFile {
 
     @Indexed(unique = true)
     String filename;
+
+    String path;
 }
 

@@ -70,14 +70,10 @@ public class AuthService {
 
 
         var jwtToken = jwtService.generateToken(user);
-        if (!user.isActive())
-            jwtToken = null;
-        else {
             user.setFailedAttempts(0);
             repository.save(user);
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
-        }
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

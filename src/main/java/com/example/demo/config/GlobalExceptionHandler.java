@@ -16,6 +16,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
+        System.out.println(e.getMessage());
+        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(e.getMessage());
     }
@@ -32,11 +34,11 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleRuntimeException(RuntimeException e) {
         System.out.println(e);
         e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("An error occurred: " + e.getMessage());
+                .body("An error occurred");
     }
 }

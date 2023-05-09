@@ -48,7 +48,7 @@ public class User implements UserDetails {
         ROLE_TESTER}
 
 
-    private Type type;
+    private Type type = Type.ROLE_DEV;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
