@@ -15,5 +15,7 @@ public class CreateUserDTO {
     public String email;
     public String department;
 
+    public String password;
+
     public User.Type type;
 }

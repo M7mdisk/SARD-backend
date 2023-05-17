@@ -4,17 +4,20 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.model.repository.UserRepository;
 import com.example.demo.utils.Utils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     @Autowired
     UserRepository userRepo;
@@ -22,11 +25,13 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    private final PasswordEncoder passwordEncoder;
     public List<User> listUsers(){
         return userRepo.findAll();
     }
 
     public User createUser(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
     }
 
