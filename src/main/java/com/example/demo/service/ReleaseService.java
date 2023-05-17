@@ -43,10 +43,9 @@ public class ReleaseService {
 
         String filename = StringUtils.cleanPath(Objects.requireNonNull(f.getOriginalFilename()));
         String[] split = filename.split("\\.");
-        String newFilename = split[0] + "_" + Utils.randomString(8) + "." + split[1];
-        String finalLocation  = fileService.upload(f,newFilename);
+        String finalLocation  = fileService.upload(f,filename);
 
-        ReleaseFile releaseFile = ReleaseFile.builder().filename(newFilename).path("/uploads/"+ newFilename).osType(osType).build();
+        ReleaseFile releaseFile = ReleaseFile.builder().filename(filename).path("/uploads/"+ filename).osType(osType).build();
 
         return fileRepository.save(releaseFile);
     }
