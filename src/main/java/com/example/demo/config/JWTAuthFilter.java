@@ -57,7 +57,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }else{
-                System.out.println("Token not valid, expired bruh");
+                System.out.println("Token expired");
                 filterChain.doFilter(request, response);
                 return;
             }
